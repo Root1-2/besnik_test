@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../Components/Button";
-import Modal from "../Components/CourseModal";
+import CourseModal from "../Components/CourseModal";
 import { Plus } from "lucide-react";
 
 export default function Course() {
@@ -16,7 +16,7 @@ export default function Course() {
                 </Button>
             </div>
 
-            <Modal open={open} onClose={() => setOpen(false)} />
+            <CourseModal open={open} onClose={() => setOpen(false)} />
         </>
     );
 }

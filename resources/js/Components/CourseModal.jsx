@@ -46,7 +46,7 @@ export default function CourseModal({ open, onClose }) {
                         placeholder="Enter course name"
                     />
 
-                    <Input label="Slug" value={slug} readOnly />
+                    <Input name="slug" label="Slug" value={slug} readOnly />
 
                     <div className="flex justify-end gap-3 mt-4">
                         <Button hover="red" onClick={onClose}>

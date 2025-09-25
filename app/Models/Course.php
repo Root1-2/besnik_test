@@ -10,7 +10,7 @@ class Course extends Model
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
 
-    protected $fiilable = [
+    protected $fillable = [
         'name',
         'slug'
     ];

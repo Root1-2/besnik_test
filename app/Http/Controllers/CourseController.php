@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Http\Requests\StoreCourseRequest;
-use App\Http\Requests\UpdateCourseRequest;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -21,16 +20,30 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        // return inertia(""); 
+        //Empty because using it in the modal component instead of a dedicated page
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request)
+    public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:courses,slug',
+            ]);
+
+            Course::create($validated);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // THIS will show the real error in JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -51,7 +64,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, Course $course)
+    public function update(Request $request, Course $course)
     {
         //
     }
