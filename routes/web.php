@@ -1,15 +1,12 @@
 <?php
 
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return inertia('Home');
 });
 
-Route::get("/courses", function () {
-    return inertia("Course");
-});
-
-Route::get("/students", function () {
-    return inertia("Student");
-});
+Route::resource('courses', CourseController::class);
+Route::resource('students', StudentController::class);

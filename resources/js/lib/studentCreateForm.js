@@ -26,4 +26,6 @@ export default function studentCreateForm(state, formData) {
     if (Object.keys(errors).length > 0) {
         return { errors };
     }
+
+    const finalSubjects = subjects.join(" | ");
 }
