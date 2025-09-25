@@ -25,18 +25,18 @@ export default function StudentSidebar({ open, onClose }) {
         }
     };
 
-    if (!open) return null;
-
     return (
-        <div
-            className="fixed inset-0 flex justify-end backdrop-blur-sm z-50"
-            onClick={onClose}
-        >
+        <div className="fixed inset-0 flex justify-end z-50 pointer-events-none">
             <div
-                className={`bg-white w-1/5 h-full shadow-2xl p-6 
-                    flex flex-col transform transition-transform duration-300 ${
-                        open ? "translate-x-0" : "translate-x-full"
-                    }`}
+                className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+                    open ? "opacity-100 pointer-events-auto" : "opacity-0"
+                }`}
+                onClick={onClose}
+            />
+            <div
+                className={`bg-white w-1/5 h-full shadow-2xl p-6 flex flex-col transform transition-transform duration-300 ${
+                    open ? "translate-x-0" : "translate-x-full"
+                } pointer-events-auto`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2 className="text-xl font-semibold text-gray-600 mb-4 underline">
