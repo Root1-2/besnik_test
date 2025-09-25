@@ -36,8 +36,6 @@ class CourseController extends Controller
         ]);
 
         Course::create($validated);
-
-        return redirect("/courses");
     }
 
 
@@ -62,7 +60,13 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        // sleep(1);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
+
+        $course->update($validated);
     }
 
     /**

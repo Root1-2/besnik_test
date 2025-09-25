@@ -1,9 +1,10 @@
-export default async function courseCreateForm(state, formData) {
+export default async function courseForm(state, formData) {
     const name = formData.get("name")?.trim() || "";
     const slug = formData.get("slug");
+    const courseId = formData.get("id");
 
-    const nameRegex = /^[A-Za-z\s]+$/;
     const errors = {};
+    const nameRegex = /^[A-Za-z\s]+$/;
 
     if (!name || !nameRegex.test(name)) {
         errors.name = "Name must only contain letters and spaces.";
@@ -13,9 +14,12 @@ export default async function courseCreateForm(state, formData) {
         return { errors };
     }
 
+    const url = courseId ? `/courses/${courseId}` : "/courses";
+    const method = courseId ? "PUT" : "POST";
+
     try {
-        const res = await fetch("/courses", {
-            method: "POST",
+        const res = await fetch(url, {
+            method,
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": document.querySelector(
@@ -26,7 +30,13 @@ export default async function courseCreateForm(state, formData) {
         });
 
         if (!res.ok) {
-            return { errors: { toast: "Failed to create course." } };
+            return {
+                errors: {
+                    toast: courseId
+                        ? "Failed to update course."
+                        : "Failed to create course.",
+                },
+            };
         }
 
         window.location.href = "/courses";

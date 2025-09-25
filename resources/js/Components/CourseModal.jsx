@@ -1,16 +1,28 @@
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { SpinnerMini } from "./SpinnerMini";
 import Input from "./Input";
 import Button from "./Button";
-import courseCreateForm from "../lib/courseCreateForm";
+import courseForm from "../lib/courseForm";
 
-export default function CourseModal({ open, onClose }) {
-    const [state, action, pending] = useActionState(courseCreateForm);
-    console.log(state);
+export default function CourseModal({ open, onClose, course }) {
+    const isEdit = !!course;
+
+    const [state, action, pending] = useActionState(courseForm);
 
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
 
+    useEffect(() => {
+        if (isEdit) {
+            setName(course.name || "");
+            setSlug(course.slug || "");
+        } else {
+            setName("");
+            setSlug("");
+        }
+    }, [course, isEdit]);
+
+    // Slug generator
     const makeSlug = (val) =>
         val
             .toLowerCase()
@@ -35,7 +47,9 @@ export default function CourseModal({ open, onClose }) {
                 onClick={(e) => e.stopPropagation()}
                 className="bg-white rounded-2xl shadow-2xl w-96 p-6"
             >
-                <h2 className="text-lg font-bold mb-4">Create Course</h2>
+                <h2 className="text-lg font-bold mb-4">
+                    {isEdit ? "Edit Course" : "Create Course"}
+                </h2>
                 <form action={action}>
                     <Input
                         label="Name"
@@ -47,6 +61,10 @@ export default function CourseModal({ open, onClose }) {
                     />
 
                     <Input name="slug" label="Slug" value={slug} readOnly />
+
+                    {isEdit && (
+                        <input type="hidden" name="id" value={course.id} />
+                    )}
 
                     <div className="flex justify-end gap-3 mt-4">
                         <Button hover="red" onClick={onClose}>
