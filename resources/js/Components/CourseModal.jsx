@@ -1,8 +1,13 @@
-import { useState } from "react";
-import InputField from "./Input";
+import { useActionState, useState } from "react";
+import { SpinnerMini } from "./SpinnerMini";
+import Input from "./Input";
 import Button from "./Button";
+import courseCreateForm from "../lib/courseCreateForm";
 
 export default function CourseModal({ open, onClose }) {
+    const [state, action, pending] = useActionState(courseCreateForm);
+    console.log(state);
+
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
 
@@ -31,15 +36,17 @@ export default function CourseModal({ open, onClose }) {
                 className="bg-white rounded-2xl shadow-2xl w-96 p-6"
             >
                 <h2 className="text-lg font-bold mb-4">Create Course</h2>
-                <form>
-                    <InputField
+                <form action={action}>
+                    <Input
                         label="Name"
+                        name="name"
                         value={name}
+                        state={state}
                         onChange={handleNameChange}
                         placeholder="Enter course name"
                     />
 
-                    <InputField label="Slug" value={slug} readOnly />
+                    <Input label="Slug" value={slug} readOnly />
 
                     <div className="flex justify-end gap-3 mt-4">
                         <Button hover="red" onClick={onClose}>
@@ -47,7 +54,7 @@ export default function CourseModal({ open, onClose }) {
                         </Button>
 
                         <Button hover="blue" type="submit">
-                            Save
+                            {pending ? <SpinnerMini /> : "Save"}
                         </Button>
                     </div>
                 </form>

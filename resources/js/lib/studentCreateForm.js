@@ -24,15 +24,6 @@ export default function studentCreateForm(state, formData) {
     }
 
     if (Object.keys(errors).length > 0) {
-        return { ok: false, errors };
+        return { errors };
     }
-
-    return {
-        ok: true,
-        data: {
-            name,
-            email,
-            subjects,
-        },
-    };
 }
