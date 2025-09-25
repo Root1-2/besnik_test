@@ -13,13 +13,13 @@ export default function Layout({ children }) {
                 </Link>
                 <Link
                     className="hover:bg-blue-950 transition-colors ps-2 py-2"
-                    href="/"
+                    href="/courses"
                 >
                     Course
                 </Link>
                 <Link
                     className="hover:bg-blue-950 transition-colors ps-2 py-2"
-                    href="/"
+                    href="/students"
                 >
                     Student
                 </Link>
