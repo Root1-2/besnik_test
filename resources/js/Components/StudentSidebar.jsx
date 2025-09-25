@@ -1,0 +1,110 @@
+import { useState } from "react";
+import { Minus, Plus } from "lucide-react";
+import Input from "./Input";
+import Button from "./Button";
+
+export default function StudentSidebar({ open, onClose }) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [subjects, setSubjects] = useState([""]);
+
+    const handleSubjectChange = (index, val) => {
+        const updated = [...subjects];
+        updated[index] = val;
+        setSubjects(updated);
+    };
+
+    const addSubject = () => {
+        if (subjects.length < 8) setSubjects([...subjects, ""]);
+    };
+
+    const removeSubject = (index) => {
+        if (subjects.length > 1) {
+            const updated = subjects.filter((_, i) => i !== index);
+            setSubjects(updated);
+        }
+    };
+
+    if (!open) return null;
+
+    return (
+        <div
+            className="fixed inset-0 flex justify-end backdrop-blur-sm z-50"
+            onClick={onClose}
+        >
+            <div
+                className={`bg-white w-1/5 h-full shadow-2xl p-6 
+                    flex flex-col transform transition-transform duration-300 ${
+                        open ? "translate-x-0" : "translate-x-full"
+                    }`}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <h2 className="text-xl font-semibold text-gray-600 mb-4 underline">
+                    Create Student
+                </h2>
+                <div className="flex flex-col flex-1 overflow-y-auto px-1">
+                    <Input
+                        label="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter student name"
+                    />
+                    <Input
+                        label="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter email"
+                    />
+
+                    <div className="flex flex-col mb-3">
+                        <label className="text-sm font-semibold mb-1">
+                            Subjects
+                        </label>
+                        {subjects.map((subj, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center mb-2 gap-2"
+                            >
+                                <input
+                                    type="text"
+                                    value={subj}
+                                    onChange={(e) =>
+                                        handleSubjectChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
+                                    className="border border-blue-100 rounded-lg px-3 py-2 flex-1 focus:outline-none focus:ring focus:ring-blue-400"
+                                    placeholder={`Subject ${index + 1}`}
+                                />
+                                {subjects.length > 1 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => removeSubject(index)}
+                                        className="p-1 rounded hover:bg-gray-200 transition-colors"
+                                    >
+                                        <Minus className="h-4 w-4 text-gray-600" />
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={addSubject}
+                            disabled={subjects.length >= 8}
+                            className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition-colors"
+                        >
+                            <Plus className="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-end gap-3 mt-4">
+                    <Button onClick={onClose}>Cancel</Button>
+                    <Button>Save</Button>
+                </div>
+            </div>
+        </div>
+    );
+}

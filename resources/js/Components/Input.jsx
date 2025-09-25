@@ -14,7 +14,7 @@ export default function InputField({
                 onChange={onChange}
                 readOnly={readOnly}
                 placeholder={placeholder}
-                className={`rounded-lg px-3 py-2 focus:outline-none mb-5
+                className={`rounded-lg px-3 py-2 focus:outline-none mb-5 border border-blue-100
           ${
               readOnly
                   ? "bg-gray-100 text-gray-500 cursor-not-allowed"

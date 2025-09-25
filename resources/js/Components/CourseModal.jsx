@@ -24,7 +24,7 @@ export default function CourseModal({ open, onClose }) {
     return (
         <div
             onClick={onClose}
-            className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50"
         >
             <div
                 onClick={(e) => e.stopPropagation()}
