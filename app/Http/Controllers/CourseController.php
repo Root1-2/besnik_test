@@ -12,7 +12,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return inertia("Course");
+        $courses = Course::all();
+        return inertia("Course", ["courses" => $courses]);
     }
 
     /**
@@ -29,19 +30,14 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:courses,slug',
-            ]);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
 
-            Course::create($validated);
+        Course::create($validated);
 
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            // THIS will show the real error in JSON
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return redirect("/courses");
     }
 
 
@@ -74,6 +70,8 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->delete();
+
+        return redirect("/courses");
     }
 }

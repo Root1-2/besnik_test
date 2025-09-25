@@ -29,7 +29,7 @@ export default async function courseCreateForm(state, formData) {
             return { errors: { toast: "Failed to create course." } };
         }
 
-        return { success: true };
+        window.location.href = "/courses";
     } catch (err) {
         return { errors: { toast: "Something went wrong." } };
     }
