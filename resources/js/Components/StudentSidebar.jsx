@@ -1,16 +1,29 @@
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import Input from "./Input";
 import Button from "./Button";
 import { SpinnerMini } from "./SpinnerMini";
 import studentCreateForm from "../lib/studentCreateForm";
 
-export default function StudentSidebar({ open, onClose }) {
+export default function StudentSidebar({ open, onClose, student }) {
     const [state, action, pending] = useActionState(studentCreateForm);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [subjects, setSubjects] = useState([""]);
+
+    // 🔑 Pre-fill form if student is passed (edit mode)
+    useEffect(() => {
+        if (student) {
+            setName(student.name || "");
+            setEmail(student.email || "");
+            setSubjects(student.subject ? student.subject.split(" | ") : [""]);
+        } else {
+            setName("");
+            setEmail("");
+            setSubjects([""]);
+        }
+    }, [student, open]);
 
     const handleSubjectChange = (index, val) => {
         const updated = [...subjects];
@@ -44,10 +57,16 @@ export default function StudentSidebar({ open, onClose }) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2 className="text-xl font-semibold text-gray-600 mb-4 underline">
-                    Create Student
+                    {student ? "Edit Student" : "Create Student"}
                 </h2>
+
                 <form action={action}>
                     <div className="flex flex-col flex-1 overflow-y-auto px-1">
+                        {/* hidden input if editing */}
+                        {student && (
+                            <input type="hidden" name="id" value={student.id} />
+                        )}
+
                         <Input
                             name="name"
                             label="Name"
@@ -70,11 +89,8 @@ export default function StudentSidebar({ open, onClose }) {
                                 Subjects
                             </label>
                             {subjects.map((subj, index) => (
-                                <div>
-                                    <div
-                                        key={index}
-                                        className="flex items-center mb-2 gap-2"
-                                    >
+                                <div key={index}>
+                                    <div className="flex items-center mb-2 gap-2">
                                         <input
                                             name="subjects"
                                             type="text"

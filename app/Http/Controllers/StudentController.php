@@ -12,7 +12,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return inertia("Student");
+        $students = Student::all();
+        return inertia("Student", ["students" => $students]);
     }
 
     /**
@@ -28,7 +29,13 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+        ]);
+
+        Student::create($validated);
     }
 
     /**
@@ -52,7 +59,13 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
+        ]);
+
+        $student->update($validated);
     }
 
     /**
@@ -60,6 +73,8 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+
+        return redirect("/students");
     }
 }

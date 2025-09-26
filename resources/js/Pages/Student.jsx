@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import Button from "../Components/Button";
 import StudentSidebar from "../Components/StudentSidebar";
+import StudentList from "../Components/StudentList";
 
-export default function Student() {
+export default function Student({ students }) {
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -15,6 +16,8 @@ export default function Student() {
                     <Plus /> Create
                 </Button>
             </div>
+
+            <StudentList students={students} />
 
             <StudentSidebar open={open} onClose={() => setOpen(false)} />
         </>

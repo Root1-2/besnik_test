@@ -10,9 +10,9 @@ class Student extends Model
     /** @use HasFactory<\Database\Factories\StudentFactory> */
     use HasFactory;
 
-    protected $fiilable = [
+    protected $fillable = [
         'name',
         'email',
-        'subjects'
+        'subject'
     ];
 }
